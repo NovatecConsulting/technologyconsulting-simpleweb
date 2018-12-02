@@ -1,11 +1,15 @@
 package io.novatec.todobackend;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
@@ -14,7 +18,7 @@ public class TodobackendApplication {
 	ArrayList<String> todos = new ArrayList<String>();
 
 	@GetMapping("/todos")
-	ArrayList<String> getTodos(){
+	List<String> getTodos(){
 
 		return todos;
 	}
