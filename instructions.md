@@ -16,5 +16,5 @@ can be specified explicitly through backend.endpoint variable, e.g.
 ```bash
 git checkout in-memory
 mvn -f todobackend spring-boot:run -Dserver.port=8081
-mvn -f todoui spring-boot:run -Dbackend.endpoint=8081 -Dserver.port=8082
+mvn -f todoui spring-boot:run -Dbackend.endpoint='http://localhost:8081' -Dserver.port=8082
 ```
