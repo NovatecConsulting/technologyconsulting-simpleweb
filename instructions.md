@@ -1,4 +1,4 @@
-## 1. clone the repo
+## 1. Clone the repo
 
 git clone
 
@@ -30,7 +30,7 @@ todobackend (in case of 'prod' profile)
 spring.datasource.url= jdbc:postgresql://${POSTGRES_HOST:postgresdb}:5432/mydb 
 ```
 
-## 2. run in standalone in-memory mode
+## 2. Run in standalone in-memory mode
 
 ```bash
 git checkout in_memory
@@ -47,7 +47,7 @@ mvn -f todobackend spring-boot:run -Dserver.port=8081
 mvn -f todoui spring-boot:run -Dbackend.endpoint='http://localhost:8081' -Dserver.port=8082
 ```
 
-## 3. run in multiple database mode
+## 3. Run in multiple database mode
 
 ### A) Run with H2 in-memory database
 
@@ -69,7 +69,7 @@ mvn -f todoui spring-boot:run
 Notes:
 - Can be specified explicitly through backend.endpoint variable like described in step 2.
 
-## 4. run all components containerized
+## 4. Run all components containerized
 
 Build the applciation jars and container images
 
@@ -109,17 +109,28 @@ docker network create todonet
 
 docker run --net todonet --name postgresdb -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=matthias -e POSTGRES_DB=mydb -d postgres:latest
 
-docker run --net todonet --name todobackend -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' -e SPRING_DATASOURCE_URL='jdbc:postgresql://postgresdb.todonet:5432/mydb'  maeddes/todobackend:v1
+docker run --net todonet --name todobackend -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' maeddes/todobackend:v1
+```
 
-docker run --net todonet --name todoui -p 8090:8090 -e BACKEND_ENDPOINT='http://todobackend.todonet:8080' --link=todobackend:todobackend maeddes/todoui:v1
+or (alternative version)
+```bash
+docker run --net todonet --name todobackend -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' -e SPRING_DATASOURCE_URL='jdbc:postgresql://postgresdb.todonet:5432/mydb'  maeddes/todobackend:v1
+```
+
+```bash
+docker run --net todonet --name todoui -p 8090:8090 -e BACKEND_ENDPOINT='http://todobackend.todonet:8080' maeddes/todoui:v1
 
 docker network inspect todonet
 ```
 
 ## 5. Use docker-compose
 
+clear all containers
+
 ```bash
 docker-compose up
 ```
 
 (uses docker-compose.yml)
+
+## 6. Kubernetes
