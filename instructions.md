@@ -19,7 +19,7 @@ mvn -f todoui spring-boot:run -Dbackend.endpoint='http://localhost:8081' -Dserve
 
 ## 3. run in multiple database mode
 
-A) Run with H2 in-memory database
+# A) Run with H2 in-memory database
 
 ```bash
 git checkout db_profiles
