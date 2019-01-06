@@ -1,5 +1,35 @@
 ## 1. clone the repo
 
+git clone
+
+Note the various branches
+
+```bash
+git branch
+  db_profiles
+  in_memory
+* master
+```
+
+The application consists of 3 main components
+- UI (todoui)
+- Main app (todobackend)
+- DB (postgresdb)
+
+todoui and todobackend are Spring Boot apps with the following external configuration possibilies:
+
+todoui:
+```properties
+backend.host=${BACKEND_HOST:todobackend}
+backend.port=${BACKEND_PORT:8090}
+backend.url=http://${backend.host}:${backend.port}
+```
+
+todobackend (in case of 'prod' profile)
+```properties
+spring.datasource.url= jdbc:postgresql://${POSTGRES_HOST:postgresdb}:5432/mydb 
+```
+
 ## 2. run in standalone in-memory mode
 
 ```bash
@@ -58,7 +88,15 @@ Run the container images and set the links to dependent containers.
 
 ```bash
 docker run --name todobackend -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' -e SPRING_DATASOURCE_URL='jdbc:postgresql://db:5432/mydb' --link=postgresdb:db maeddes/todobackend:v1
+```
 
+OR
+
+```bash
+docker run --name todobackend -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' --link=postgresdb:postgresdb maeddes/todobackend:v1
+```
+
+```bash
 docker run --name todoui -p 8090:8090 -e BACKEND_ENDPOINT='http://todobackend:8080' --link=todobackend:todobackend maeddes/todoui:v1
 ```
 
@@ -79,3 +117,9 @@ docker network inspect todonet
 ```
 
 ## 5. Use docker-compose
+
+```bash
+docker-compose up
+```
+
+(uses docker-compose.yml)
