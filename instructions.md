@@ -27,4 +27,15 @@ mvn -f todobackend spring-boot:run -Dspring.profiles.active=dev
 mvn -f todoui spring-boot:run 
 ```
 
-can be specified explicitly through backend.endpoint variable like described in step 2.
+B) Run with dockerized Postgres DB
+
+```bash
+git checkout db_profiles
+docker run --name postgresdb -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=matthias -e POSTGRES_DB=mydb -d postgres:latest
+mvn -f todobackend spring-boot:run -Dspring.profiles.active=prod 
+mvn -f todoui spring-boot:run 
+```
+
+Notes:
+- Can be specified explicitly through backend.endpoint variable like described in step 2.
+
