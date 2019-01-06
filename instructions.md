@@ -77,3 +77,5 @@ docker run --net todonet --name todoui -p 8090:8090 -e BACKEND_ENDPOINT='http://
 
 docker network inspect todonet
 ```
+
+## 5. Use docker-compose
