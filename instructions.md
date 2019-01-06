@@ -68,5 +68,12 @@ clear all containers
 
 ```bash
 docker network create todonet
+
 docker run --net todonet --name postgresdb -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=matthias -e POSTGRES_DB=mydb -d postgres:latest
+
 docker run --net todonet --name todobackend -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' -e SPRING_DATASOURCE_URL='jdbc:postgresql://postgresdb.todonet:5432/mydb'  maeddes/todobackend:v1
+
+docker run --net todonet --name todoui -p 8090:8090 -e BACKEND_ENDPOINT='http://todobackend.todonet:8080' --link=todobackend:todobackend maeddes/todoui:v1
+
+docker network inspect todonet
+```
