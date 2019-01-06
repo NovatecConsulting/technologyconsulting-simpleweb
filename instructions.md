@@ -1,6 +1,6 @@
-1. clone the repo
+## 1. clone the repo
 
-2. run in standalone in-memory mode
+## 2. run in standalone in-memory mode
 
 ```bash
 git checkout in_memory
@@ -17,7 +17,7 @@ mvn -f todobackend spring-boot:run -Dserver.port=8081
 mvn -f todoui spring-boot:run -Dbackend.endpoint='http://localhost:8081' -Dserver.port=8082
 ```
 
-3. run in multiple database mode
+## 3. run in multiple database mode
 
 A) Run with H2 in-memory database
 
@@ -39,3 +39,13 @@ mvn -f todoui spring-boot:run
 Notes:
 - Can be specified explicitly through backend.endpoint variable like described in step 2.
 
+## 4. run all components containerized
+
+Build the applciation jars and container images
+
+```bash
+mvn -f todobackend clean install
+mvn -f todoui clean install
+docker build -f Dockerfile-todobackend -t maeddes/todobackend:v1 .
+docker build -f Dockerfile-todoui -t maeddes/todoui:v1 .
+```
