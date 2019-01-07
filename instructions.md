@@ -1,6 +1,8 @@
-## 1. Clone the repo
+## 1. Clone and get started with the repo
 
-git clone
+```bash
+git clone https://github.com/maeddes/todo-reference-app.git
+```
 
 Note the various branches
 
@@ -25,7 +27,7 @@ backend.port=${BACKEND_PORT:8090}
 backend.url=http://${backend.host}:${backend.port}
 ```
 
-todobackend (in case of 'prod' profile)
+todobackend (in case of 'prod' profile in db_profiles branch)
 ```properties
 spring.datasource.url= jdbc:postgresql://${POSTGRES_HOST:postgresdb}:5432/mydb 
 ```
@@ -61,13 +63,10 @@ mvn -f todoui spring-boot:run
 
 ```bash
 git checkout db_profiles
-docker run --name postgresdb -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=matthias -e POSTGRES_DB=mydb -d postgres:latest
-mvn -f todobackend spring-boot:run -Dspring.profiles.active=prod 
-mvn -f todoui spring-boot:run 
+docker run --name postgresdb -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=matthias -e POSTGRES_DB=mydb -d postgres:latest 
+mvn -f todobackend spring-boot:run -Dspring.profiles.active=prod -DPOSTGRES_HOST=localhost
+mvn -f todoui spring-boot:run -DBACKEND_HOST=localhost
 ```
-
-Notes:
-- Can be specified explicitly through backend.endpoint variable like described in step 2.
 
 ## 4. Run all components containerized
 
@@ -134,3 +133,6 @@ docker-compose up
 (uses docker-compose.yml)
 
 ## 6. Kubernetes
+
+
+
