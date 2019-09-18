@@ -1,0 +1,21 @@
+language: java
+
+jdk:
+- oraclejdk8
+services:
+# as this pipeline builds containers, Travis Docker Service is needed
+- docker
+script:
+# this pipeline is separated into different phases:
+# ----------------------------------
+# #1 build the apps
+- mvn versions:set -DnewVersion=${TRAVIS_BUILD_NUMBER} -B -f todobackend/pom.xml
+- mvn clean install -f todobackend/pom.xml
+- mvn versions:set -DnewVersion=${TRAVIS_BUILD_NUMBER} -B -f todoui/pom.xml
+- mvn clean install -f todoui/pom.xml
+# ----------------------------------
+# #2 build container images for both apps
+- cp todobackend/target/todobackend-*.jar app.jar
+- docker build -t novatec/technologyconsulting-simpleweb:todobackend-{TRAVIS_BUILD_NUMBER} .
+- cp todoui/target/todoui*.jar app.jar
+- docker build -t novatec/technologyconsulting-simpleweb:todoui-${TRAVIS_BUILD_NUMBER} .
