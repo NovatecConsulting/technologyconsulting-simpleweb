@@ -1,4 +1,4 @@
-package io.novatec.todobackend;
+package de.novatec.todobackend;
 
 import java.util.ArrayList;
 import java.util.List;

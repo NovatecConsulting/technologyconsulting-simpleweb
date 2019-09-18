@@ -1,4 +1,4 @@
-package io.novatec.todobackend;
+package de.novatec.todobackend;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

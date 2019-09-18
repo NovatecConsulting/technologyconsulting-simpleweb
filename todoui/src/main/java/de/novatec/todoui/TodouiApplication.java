@@ -1,4 +1,4 @@
-package io.novatec.todoui;
+package de.novatec.todoui;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
