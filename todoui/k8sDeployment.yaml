@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todouiservice
+  labels:
+    app: todouiservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todouiservice
+  template:
+    metadata:
+      labels:
+        app: todouiservice
+    spec:
+      containers:
+      - name: todouiservice
+        image: novatec/simpleweb:ui-tj-141119
+        ports:
+        - containerPort: 8091
+        env:
+        - name: BACKEND_ENDPOINT
+          value: "http://todobackendservice"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todouiservice
+  labels:
+    app: todouiservice
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    name: todouiservice
+    targetPort: 8091
+  selector:
+    app: todouiservice

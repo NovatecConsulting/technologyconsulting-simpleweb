@@ -1,0 +1,29 @@
+version: "3.5"
+
+networks:
+  simpleweb:
+      driver: bridge
+      name: simpleweb
+
+services:
+
+  simpleweb-backend:
+    image: novatec/simpleweb:backend-tj-141119
+    hostname: simpleweb-backend
+    container_name: simpleweb-backend
+    ports:
+      - 8090:8090
+    networks:
+      - simpleweb
+
+  simpleweb-ui:
+    image: novatec/simpleweb:ui-tj-141119
+    hostname: simpleweb-ui
+    container_name: simpleweb-ui
+    environment:
+      - BACKEND_ENDPOINT=http://simpleweb-backend:8090
+      - SPRING_PROFILES_ACTIVE=container
+    ports:
+      - 8091:8091
+    networks:
+      - simpleweb
