@@ -1,0 +1,12 @@
+---
+applications:
+- name: todobackend
+  memory: 768M
+  instances: 1
+  path: target/todobackend-0.0.1-SNAPSHOT.jar
+  buildpacks:
+    - https://github.com/cloudfoundry/java-buildpack.git
+#  env:
+#    SPRING_PROFILES_ACTIVE: dev
+  services:
+    - backenddb

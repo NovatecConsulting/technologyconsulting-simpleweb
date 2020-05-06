@@ -1,0 +1,11 @@
+---
+applications:
+- name: todoui
+  memory: 768M
+  instances: 1
+  path: target/todoui-0.0.1-SNAPSHOT.jar
+  buildpacks:
+    - https://github.com/cloudfoundry/java-buildpack.git
+  env:
+    BACKEND_HOST: todobackend.cfapps.io
+    BACKEND_PORT: 80
