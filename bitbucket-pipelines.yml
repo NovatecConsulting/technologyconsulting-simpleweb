@@ -1,0 +1,65 @@
+definitions:
+  steps:
+
+    - step: &build-backend
+        name: build backend
+        image: maven:3.6.1
+        caches:
+          - maven
+        script:
+          - mvn -B clean install -f todobackend/pom.xml
+        artifacts:
+          - todobackend/target/todobackend-0.0.1-SNAPSHOT.jar
+
+    - step: &deploy-backend-to-cf
+        name: deploy backend
+        image: governmentpaas/cf-cli:latest
+        script:
+          - cf login -u ${CF_USERNAME} -p ${CF_PASSWORD} -a ${CF_API} -o "${CF_ORG}" -s "${CF_SPACE}"
+          - cf push -f todobackend/manifest.yml -p todobackend/target/todobackend-0.0.1-SNAPSHOT.jar
+
+    - step: &build-ui
+        name: build ui
+        image: maven:3.6.1
+        caches:
+          - maven
+        script:
+          - mvn -B clean install -f todoui/pom.xml
+        artifacts:
+          - todoui/target/todoui-0.0.1-SNAPSHOT.jar
+
+    - step: &deploy-ui-to-cf
+        name: deploy ui
+        image: governmentpaas/cf-cli:latest
+        script:
+          - cf login -u ${CF_USERNAME} -p ${CF_PASSWORD} -a ${CF_API} -o "${CF_ORG}" -s "${CF_SPACE}"
+          - cf push -f todoui/manifest.yml -p todoui/target/todoui-0.0.1-SNAPSHOT.jar 
+
+pipelines:
+
+  branches:
+    master:
+      - parallel:
+        - step: *build-backend
+        - step: *build-ui
+
+      - parallel:
+        - step: 
+            deployment: PROD-PWS-todobackend
+            <<: *deploy-backend-to-cf
+        - step: 
+            deployment: PROD-PWS-todoui
+            <<: *deploy-ui-to-cf
+
+    develop:
+      - parallel:
+        - step: *build-backend
+        - step: *build-ui
+
+      - parallel:
+        - step: 
+            deployment: TEST-IBM-todobackend
+            <<: *deploy-backend-to-cf
+        - step: 
+            deployment: TEST-IBM-todoui
+            <<: *deploy-ui-to-cf
